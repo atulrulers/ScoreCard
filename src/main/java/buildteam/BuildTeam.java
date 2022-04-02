@@ -1,10 +1,14 @@
 package buildteam;
 
 import enums.PlayerSkill;
+import model.BattingStat;
+import model.BowlingStat;
 import model.Player;
+import model.PlayerStatInMatch;
 import model.Team;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,7 +27,8 @@ public class BuildTeam {
         return Team.builder()
                    .teamName(teamName)
                    .id(teamId)
-                   .playerList(playerList)
+                   .playerStatInMatch(getPlayersStatInMatch(playerList))
+                   .fallOfWickets(new ArrayList<>())
                    .build();
 
     }
@@ -51,6 +56,39 @@ public class BuildTeam {
         }
 
         return playerList;
+    }
+
+    private HashMap<Player, PlayerStatInMatch> getPlayersStatInMatch(final List<Player> playerList) {
+        final BowlingStat bowlingStat = BowlingStat.builder()
+                                                   .maxOverAllowed(0)
+                                                   .overBowled(0)
+                                                   .noBall(0)
+                                                   .totalRunConceded(0)
+                                                   .wicketTaken(0)
+                                                   .wide(0)
+                                                   .build();
+
+        final BattingStat battingStat = BattingStat.builder()
+                                                   .strikeRate(0)
+                                                   .totalBallPlayed(0)
+                                                   .totalRunsScored(0)
+                                                   .totalNumberOf1(0)
+                                                   .totalNumberOf2(0)
+                                                   .totalNumberOf3(0)
+                                                   .totalNumberOf4(0)
+                                                   .totalNumberOf6(0)
+                                                   .build();
+
+        final HashMap<Player, PlayerStatInMatch> playerPlayerStatInMatch = new HashMap<>();
+        for (final Player player : playerList) {
+            final PlayerStatInMatch playerStatInMatch = PlayerStatInMatch.builder()
+                                                                         .battingStat(battingStat)
+                                                                         .bowlingStat(bowlingStat)
+                                                                         .build();
+            playerPlayerStatInMatch.put(player, playerStatInMatch);
+        }
+
+        return playerPlayerStatInMatch;
     }
 
 }
