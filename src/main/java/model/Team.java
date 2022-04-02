@@ -11,4 +11,5 @@ public class Team {
     private int          id;
     private String       teamName;
     private List<Player> playerList;
+    private List<FallOfWicket> fallOfWickets;
 }

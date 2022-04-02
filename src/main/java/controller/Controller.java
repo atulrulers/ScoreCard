@@ -1,18 +1,12 @@
 package controller;
 
-import enums.PlayerSkill;
-import model.Player;
-
+import buildteam.BuildTeam;
+import model.Team;
 
 public class Controller {
     public static void main(String... args) {
-        Player player = Player.builder()
-                              .id(1)
-                              .firstName("Rohan")
-                              .lastName("Sharma")
-                              .playerSkill(PlayerSkill.BATSMAN)
-                              .build();
-
-        System.out.println(player.toString());
+        final BuildTeam buildTeam = new BuildTeam();
+        final Team team = buildTeam.buildTeam(5);
+        System.out.println(team.toString());
     }
 }
