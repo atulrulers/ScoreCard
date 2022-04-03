@@ -55,6 +55,10 @@ public class BattingAndBowling {
         final BattingStat battingStat = playerStatInMatch.getBattingStat();
         battingStat.setTotalBallPlayed(battingStat.getTotalBallPlayed() + 1);
 
+        System.out.printf("Batsman playing %s %s %n%n", player.getFirstName(),
+                playerStatInMatch.getBattingStat()
+                                 .toString());
+
         switch (runType) {
         case SINGLE:
             battingStat.setTotalRunsScored(battingStat.getTotalRunsScored() + 1);
@@ -131,11 +135,6 @@ public class BattingAndBowling {
     }
 
     private BowlType getBowlType() {
-        System.out.printf("Enter bowlType %n");
-        System.out.printf("Select %n");
-        System.out.printf("%s%n %s%n %s%n %s%n %s%n %s%n %s%n %s%n", BowlType.SINGLE.name(), BowlType.DOUBLE.name(),
-                BowlType.TRIPLE.name(), BowlType.FOUR.name(), BowlType.SIX.name(), BowlType.OUT.name(),
-                BowlType.WIDE.name(), BowlType.NO_BALL.name());
         final String bowlingType = scanner.next();
         return BowlType.valueOf(bowlingType.toUpperCase());
     }
@@ -189,9 +188,19 @@ public class BattingAndBowling {
                              .getTeam()
                              .getPlayerList()
                              .get(playInOneOver.getBatsmanOnStrike());
+        System.out.printf("Enter bowlType %n");
+        System.out.printf("Select %n");
+        System.out.printf("%s %s %s %s %s %s %s %s %n", BowlType.SINGLE.name(), BowlType.DOUBLE.name(),
+                BowlType.TRIPLE.name(), BowlType.FOUR.name(), BowlType.SIX.name(), BowlType.OUT.name(),
+                BowlType.WIDE.name(), BowlType.NO_BALL.name());
         while (ballInthisOver < 6) {
             ballInthisOver += 1;
+            System.out.printf("Over: %d.%d ", playInOneOver.getBattingTeam()
+                                                           .getOverPlayed() / 6, ballInthisOver);
             final BowlType bowlType = getBowlType();
+            if (bowlType == BowlType.WIDE || bowlType == BowlType.NO_BALL) {
+                ballInthisOver -= 1;
+            }
             updateBattingStat(playInOneOver.getBattingTeam(), batsmanOnStrike, getRunType(bowlType));
             updateBowlingStat(playInOneOver.getBowlingTeam(), bowler, bowlType);
             updateTeamStat(playInOneOver.getBattingTeam(), bowlType);
@@ -255,7 +264,7 @@ public class BattingAndBowling {
             break;
         case WIDE:
             battingTeam.setTotalRunScored(battingTeam.getTotalRunScored() + 1);
-            battingTeam.setRunsFromWideBall(battingTeam.getRunsFromWideBall()+1);
+            battingTeam.setRunsFromWideBall(battingTeam.getRunsFromWideBall() + 1);
             break;
 
         case NO_BALL:
