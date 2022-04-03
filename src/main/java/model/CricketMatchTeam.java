@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 public class CricketMatchTeam {
     private int matchId;
-    private Team firstTeam;
-    private Team secondTeam;
+    private TeamInAMatch firstTeam;
+    private TeamInAMatch secondTeam;
 }

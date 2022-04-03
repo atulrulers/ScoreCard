@@ -27,15 +27,15 @@ public class BuildTeam {
         return Team.builder()
                    .teamName(teamName)
                    .id(teamId)
-                   .playerStatInMatch(getPlayersStatInMatch(playerList))
-                   .fallOfWickets(new ArrayList<>())
+                   .playerList(playerList)
                    .build();
 
     }
 
     private List<Player> getPlayerListForTeam(final int teamId, final int numberOfPlayer) {
         int totalPlayer = numberOfPlayer;
-        System.out.printf("Enter %d players details : %n first name, last name & skill[%s, %s, %s] %n", totalPlayer,
+        System.out.printf("Provide players detail in Batting order %n");
+        System.out.printf("Enter %d players detail : %n first name, last name & skill[%s, %s, %s] %n", totalPlayer,
                 PlayerSkill.BATSMAN.name(), PlayerSkill.BOWLER.name(), PlayerSkill.ALL_ROUNDER.name());
 
         final List<Player> playerList = new ArrayList<>();
@@ -56,39 +56,6 @@ public class BuildTeam {
         }
 
         return playerList;
-    }
-
-    private HashMap<Player, PlayerStatInMatch> getPlayersStatInMatch(final List<Player> playerList) {
-        final BowlingStat bowlingStat = BowlingStat.builder()
-                                                   .maxOverAllowed(0)
-                                                   .overBowled(0)
-                                                   .noBall(0)
-                                                   .totalRunConceded(0)
-                                                   .wicketTaken(0)
-                                                   .wide(0)
-                                                   .build();
-
-        final BattingStat battingStat = BattingStat.builder()
-                                                   .strikeRate(0)
-                                                   .totalBallPlayed(0)
-                                                   .totalRunsScored(0)
-                                                   .totalNumberOf1(0)
-                                                   .totalNumberOf2(0)
-                                                   .totalNumberOf3(0)
-                                                   .totalNumberOf4(0)
-                                                   .totalNumberOf6(0)
-                                                   .build();
-
-        final HashMap<Player, PlayerStatInMatch> playerPlayerStatInMatch = new HashMap<>();
-        for (final Player player : playerList) {
-            final PlayerStatInMatch playerStatInMatch = PlayerStatInMatch.builder()
-                                                                         .battingStat(battingStat)
-                                                                         .bowlingStat(bowlingStat)
-                                                                         .build();
-            playerPlayerStatInMatch.put(player, playerStatInMatch);
-        }
-
-        return playerPlayerStatInMatch;
     }
 
 }
