@@ -11,6 +11,7 @@ import model.TeamInAMatch;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class CricketMatchBuilder {
 
@@ -48,7 +49,7 @@ public class CricketMatchBuilder {
         final HashMap<Player, PlayerStatInMatch> playerStatInMatch = getPlayersStatInMatch(team.getPlayerList());
         return TeamInAMatch.builder()
                            .team(team)
-                           .currentBatting(1)
+                           .currentBatting(Set.of(0,1))
                            .fallOfWickets(new ArrayList<>())
                            .wicketFallen(0)
                            .overPlayed(0)

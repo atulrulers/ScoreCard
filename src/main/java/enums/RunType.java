@@ -1,6 +1,7 @@
 package enums;
 
 public enum RunType {
+    ZERO,
     SINGLE,
     DOUBLE,
     TRIPLE,

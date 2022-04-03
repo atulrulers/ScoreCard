@@ -9,6 +9,7 @@ import model.TeamInAMatch;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import static constants.Constants.BALL;
 import static constants.Constants.FOURS;
@@ -22,17 +23,17 @@ public class TeamStat {
     public void showBattingTeamStatInMatch(final TeamInAMatch teamInAMatch) {
         System.out.printf("%s%n", teamInAMatch.getTeam()
                                               .getTeamName());
-        System.out.printf("[%d / %d, Overs: %d]", teamInAMatch.getTotalRunScored(), teamInAMatch.getWicketFallen(),
+        System.out.printf("[%d / %d, Overs: %d]%n", teamInAMatch.getTotalRunScored(), teamInAMatch.getWicketFallen(),
                 teamInAMatch.getOverPlayed());
 
         final HashMap<Player, PlayerStatInMatch> playerStatInMatchMap = teamInAMatch.getPlayerStatInMatch();
-        final int currentPlayer = teamInAMatch.getCurrentBatting();
+        final Set<Integer> currentPlayer = teamInAMatch.getCurrentBatting();
         final List<Player> playerList = teamInAMatch.getTeam()
                                                     .getPlayerList();
         for (int i = 0; i < playerList.size(); i++) {
             final Player player = playerList.get(i);
             // current player playing
-            if (i == currentPlayer - 1 || i == currentPlayer) {
+            if (currentPlayer.contains(i)) {
                 showBatsmanDetails(player, playerStatInMatchMap.get(player), true);
             } else {
                 showBatsmanDetails(player, playerStatInMatchMap.get(player), false);

@@ -5,9 +5,10 @@ import lombok.Data;
 
 @Builder
 @Data
-public class MatchSetup {
-    private int numberOfPlayer;
-    private int numberOfOver;
+public class PlayInOneOver {
+    private int batsmanOnStrike;
+    private int batsmanOnNonStrike;
+    private Player bowler;
     private TeamInAMatch battingTeam;
     private TeamInAMatch bowlingTeam;
 }

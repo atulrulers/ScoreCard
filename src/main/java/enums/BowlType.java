@@ -8,5 +8,6 @@ public enum BowlType {
     SIX,
     OUT,
     NO_BALL,
-    WIDE
+    WIDE,
+    OVER
 }
