@@ -16,11 +16,13 @@ import java.util.Scanner;
 public class BattingAndBowling {
     private final Scanner scanner = new Scanner(System.in);
 
-    public void battingAndBowling(final TeamInAMatch battingTeam, final TeamInAMatch bowlingTeam, final int totalOver) {
+    public void battingAndBowlingFirst(final TeamInAMatch battingTeam, final TeamInAMatch bowlingTeam,
+            final int totalOver) {
         int currentOver = 0;
         int batsmanOnStrike = 0;
         int batsmanOnNonStrike = 1;
         int currentBowler = -1;
+        System.out.printf("First Inning Started %n%n");
         while (currentOver < totalOver && battingTeam.getWicketFallen() < battingTeam.getTeam()
                                                                                      .getPlayerList()
                                                                                      .size()) {
@@ -42,6 +44,38 @@ public class BattingAndBowling {
                                                                                 .get(bowler))
                                                              .build();
             matchPlayedInOneOver(playInOneOver);
+            currentOver += 1;
+        }
+    }
+
+    public void battingAndBowlingSecond(final TeamInAMatch battingTeam, final TeamInAMatch bowlingTeam,
+            final int totalOver) {
+        int currentOver = 0;
+        int batsmanOnStrike = 0;
+        int batsmanOnNonStrike = 1;
+        int currentBowler = -1;
+        System.out.printf("Second Inning Started %n%n");
+        while (currentOver < totalOver && battingTeam.getWicketFallen() < battingTeam.getTeam()
+                                                                                     .getPlayerList()
+                                                                                     .size()) {
+            System.out.printf("Select bowler [%d-%d] %n", 0, bowlingTeam.getTeam()
+                                                                        .getPlayerList()
+                                                                        .size() - 1);
+            int bowler = scanner.nextInt();
+            while (currentBowler == bowler) {
+                System.out.printf("Same bowler cannot bowl again. Select different bowler %n");
+                bowler = scanner.nextInt();
+            }
+            final PlayInOneOver playInOneOver = PlayInOneOver.builder()
+                                                             .battingTeam(battingTeam)
+                                                             .bowlingTeam(bowlingTeam)
+                                                             .batsmanOnStrike(batsmanOnStrike)
+                                                             .batsmanOnNonStrike(batsmanOnNonStrike)
+                                                             .bowler(bowlingTeam.getTeam()
+                                                                                .getPlayerList()
+                                                                                .get(bowler))
+                                                             .build();
+            matchPlayedInOneOverSecondInning(playInOneOver);
             currentOver += 1;
         }
     }
@@ -203,6 +237,74 @@ public class BattingAndBowling {
             updateTeamStat(playInOneOver.getBattingTeam(), bowlType, playInOneOver);
             if (ballInthisOver <= 5) {
                 batsmanOnStrike = getBatsmanOnStrike(playInOneOver, bowlType);
+            }
+        }
+        playInOneOver.setBatsmanOnStrike(playInOneOver.getBatsmanOnNonStrike());
+    }
+
+    private void matchPlayedInOneOverSecondInning(final PlayInOneOver playInOneOver) {
+
+        int ballInthisOver = 0;
+        final Player bowler = playInOneOver.getBowler();
+        Player batsmanOnStrike =
+                playInOneOver.getBattingTeam()
+                             .getTeam()
+                             .getPlayerList()
+                             .get(playInOneOver.getBatsmanOnStrike());
+        System.out.printf("Enter bowlType %n");
+        System.out.printf("Select %n");
+        System.out.printf("%s %s %s %s %s %s %s %s %n", BowlType.SINGLE.name(), BowlType.DOUBLE.name(),
+                BowlType.TRIPLE.name(), BowlType.FOUR.name(), BowlType.SIX.name(), BowlType.OUT.name(),
+                BowlType.WIDE.name(), BowlType.NO_BALL.name());
+        while (ballInthisOver < 6 && playInOneOver.getBattingTeam()
+                                                  .getWicketFallen() < playInOneOver.getBattingTeam()
+                                                                                    .getTeam()
+                                                                                    .getPlayerList()
+                                                                                    .size()) {
+            ballInthisOver += 1;
+            System.out.printf("Over: %d.%d ", playInOneOver.getBattingTeam()
+                                                           .getOverPlayed() / 6, ballInthisOver);
+            final BowlType bowlType = getBowlType();
+            if (bowlType == BowlType.WIDE || bowlType == BowlType.NO_BALL) {
+                ballInthisOver -= 1;
+            }
+            updateBattingStat(playInOneOver.getBattingTeam(), batsmanOnStrike, getRunType(bowlType));
+            updateBowlingStat(playInOneOver.getBowlingTeam(), bowler, bowlType);
+            updateTeamStat(playInOneOver.getBattingTeam(), bowlType, playInOneOver);
+            if (ballInthisOver <= 5) {
+                batsmanOnStrike = getBatsmanOnStrike(playInOneOver, bowlType);
+            }
+
+            // second batting team all out
+            if (playInOneOver.getBattingTeam()
+                             .getWicketFallen() >= playInOneOver.getBattingTeam()
+                                                                .getTeam()
+                                                                .getPlayerList()
+                                                                .size()) {
+                int runDiff =
+                        playInOneOver.getBowlingTeam()
+                                     .getTotalRunScored() - playInOneOver.getBattingTeam()
+                                                                         .getTotalRunScored();
+                System.out.printf("%s won by %d runs %n", playInOneOver.getBowlingTeam()
+                                                                       .getTeam()
+                                                                       .getTeamName(), runDiff);
+                return;
+            }
+
+            // second batting scored more run
+            if (playInOneOver.getBattingTeam()
+                             .getTotalRunScored() > playInOneOver.getBowlingTeam()
+                                                                 .getTotalRunScored()) {
+                int wicketDiff =
+                        playInOneOver.getBattingTeam()
+                                     .getTeam()
+                                     .getPlayerList()
+                                     .size() - 1 - playInOneOver.getBattingTeam()
+                                                                .getWicketFallen();
+                System.out.printf("%s won by %d wicket", playInOneOver.getBattingTeam()
+                                                                      .getTeam()
+                                                                      .getTeamName(), wicketDiff);
+                return;
             }
         }
         playInOneOver.setBatsmanOnStrike(playInOneOver.getBatsmanOnNonStrike());

@@ -10,14 +10,14 @@ public class PlayMatch {
 
     public void playCricket() {
         final MatchSetup matchSetup = basicMatchSetup.beforeMatchSetup();
-        battingAndBowling.battingAndBowling(matchSetup.getBattingTeam(), matchSetup.getBowlingTeam(),
+        battingAndBowling.battingAndBowlingFirst(matchSetup.getBattingTeam(), matchSetup.getBowlingTeam(),
                 matchSetup.getNumberOfOver());
         teamStat.showBattingTeamStatInMatch(matchSetup.getBattingTeam());
-//        teamStat.showBattingTeamStatInMatch(matchSetup.getBowlingTeam());
+        //        teamStat.showBattingTeamStatInMatch(matchSetup.getBowlingTeam());
         System.out.printf("Playing second inning %n");
-        battingAndBowling.battingAndBowling(matchSetup.getBowlingTeam(), matchSetup.getBattingTeam(),
+        battingAndBowling.battingAndBowlingSecond(matchSetup.getBowlingTeam(), matchSetup.getBattingTeam(),
                 matchSetup.getNumberOfOver());
         teamStat.showBattingTeamStatInMatch(matchSetup.getBowlingTeam());
-//        teamStat.showBattingTeamStatInMatch(matchSetup.getBattingTeam());
+        //        teamStat.showBattingTeamStatInMatch(matchSetup.getBattingTeam());
     }
 }
