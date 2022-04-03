@@ -3,10 +3,8 @@ package teamstat;
 import model.BattingStat;
 import model.Player;
 import model.PlayerStatInMatch;
-import model.Team;
 import model.TeamInAMatch;
 
-import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -40,6 +38,9 @@ public class TeamStat {
                 showBatsmanDetails(player, playerStatInMatchMap.get(player), false);
             }
         }
+
+        System.out.printf("FOW: %s", teamInAMatch.getFallOfWickets()
+                                                .toString());
 
     }
 

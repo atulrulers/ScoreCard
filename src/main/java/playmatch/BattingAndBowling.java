@@ -21,7 +21,9 @@ public class BattingAndBowling {
         int batsmanOnStrike = 0;
         int batsmanOnNonStrike = 1;
         int currentBowler = -1;
-        while (currentOver < totalOver) {
+        while (currentOver < totalOver && battingTeam.getWicketFallen() < battingTeam.getTeam()
+                                                                                     .getPlayerList()
+                                                                                     .size()) {
             System.out.printf("Select bowler [%d-%d] %n", 0, bowlingTeam.getTeam()
                                                                         .getPlayerList()
                                                                         .size() - 1);
@@ -76,10 +78,6 @@ public class BattingAndBowling {
             System.out.println("Invalid entry");
             break;
         }
-//        playerStatInMatch.setBattingStat(battingStat);
-        System.out.printf("Batsman playing %s %s %n%n", player.getFirstName(),
-                playerStatInMatch.getBattingStat()
-                                 .toString());
     }
 
     private void updateBowlingStat(final TeamInAMatch bowlingTeam, final Player player, final BowlType bowlType) {
@@ -188,7 +186,11 @@ public class BattingAndBowling {
         System.out.printf("%s %s %s %s %s %s %s %s %n", BowlType.SINGLE.name(), BowlType.DOUBLE.name(),
                 BowlType.TRIPLE.name(), BowlType.FOUR.name(), BowlType.SIX.name(), BowlType.OUT.name(),
                 BowlType.WIDE.name(), BowlType.NO_BALL.name());
-        while (ballInthisOver < 6) {
+        while (ballInthisOver < 6 && playInOneOver.getBattingTeam()
+                                                  .getWicketFallen() < playInOneOver.getBattingTeam()
+                                                                                    .getTeam()
+                                                                                    .getPlayerList()
+                                                                                    .size()) {
             ballInthisOver += 1;
             System.out.printf("Over: %d.%d ", playInOneOver.getBattingTeam()
                                                            .getOverPlayed() / 6, ballInthisOver);
@@ -198,7 +200,7 @@ public class BattingAndBowling {
             }
             updateBattingStat(playInOneOver.getBattingTeam(), batsmanOnStrike, getRunType(bowlType));
             updateBowlingStat(playInOneOver.getBowlingTeam(), bowler, bowlType);
-            updateTeamStat(playInOneOver.getBattingTeam(), bowlType);
+            updateTeamStat(playInOneOver.getBattingTeam(), bowlType, playInOneOver);
             if (ballInthisOver <= 5) {
                 batsmanOnStrike = getBatsmanOnStrike(playInOneOver, bowlType);
             }
@@ -226,7 +228,8 @@ public class BattingAndBowling {
         }
     }
 
-    private void updateTeamStat(final TeamInAMatch battingTeam, final BowlType bowlType) {
+    private void updateTeamStat(final TeamInAMatch battingTeam, final BowlType bowlType,
+            final PlayInOneOver playInOneOver) {
         switch (bowlType) {
         case SINGLE:
             battingTeam.setTotalRunScored(battingTeam.getTotalRunScored() + 1);
@@ -257,6 +260,8 @@ public class BattingAndBowling {
                                                           .build();
             List<FallOfWicket> fallOfWickets = battingTeam.getFallOfWickets();
             fallOfWickets.add(fallOfWicket);
+            // next batsman on crease
+            nextBatsmanToPlay(playInOneOver);
             break;
         case WIDE:
             battingTeam.setTotalRunScored(battingTeam.getTotalRunScored() + 1);
@@ -274,6 +279,14 @@ public class BattingAndBowling {
 
         }
 
+    }
+
+    private void nextBatsmanToPlay(final PlayInOneOver playInOneOver) {
+        int onStrike = playInOneOver.getBatsmanOnStrike();
+        int onNonStrike = playInOneOver.getBatsmanOnNonStrike();
+
+        int nextBatsman = onStrike > onNonStrike ? onStrike + 1 : onNonStrike + 1;
+        playInOneOver.setBatsmanOnStrike(nextBatsman);
     }
 
 }
