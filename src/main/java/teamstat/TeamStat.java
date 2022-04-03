@@ -30,7 +30,7 @@ public class TeamStat {
         final Set<Integer> currentPlayer = teamInAMatch.getCurrentBatting();
         final List<Player> playerList = teamInAMatch.getTeam()
                                                     .getPlayerList();
-        System.out.printf("%s %25s %8s %4s %4s %5s %n", NAME, RUN, BALL, FOURS, SIXES, STRIKE_RATE);
+        System.out.printf("%s %15s %8s %4s %4s %5s %n", NAME, RUN, BALL, FOURS, SIXES, STRIKE_RATE);
         for (int i = 0; i < playerList.size(); i++) {
             final Player player = playerList.get(i);
             // current player playing
@@ -48,11 +48,11 @@ public class TeamStat {
         final String playerName = String.format("%s %s", player.getFirstName(), player.getLastName());
         final BattingStat battingStat = playerStatInMatch.getBattingStat();
         if (isCurrentlyBatting) {
-            System.out.printf("%s* %13d %8d %4d %4d %5.2f %n", playerName, battingStat.getTotalRunsScored(),
+            System.out.printf("%s* %8d %8d %4d %4d %5.2f %n", playerName, battingStat.getTotalRunsScored(),
                     battingStat.getTotalBallPlayed(), battingStat.getTotalNumberOf4(),
                     battingStat.getTotalNumberOf6(), battingStat.getStrikeRate());
         } else {
-            System.out.printf("%s %13d %8d %4d %4d %5.2f %n", playerName, battingStat.getTotalRunsScored(),
+            System.out.printf("%s %8d %8d %4d %4d %5.2f %n", playerName, battingStat.getTotalRunsScored(),
                     battingStat.getTotalBallPlayed(), battingStat.getTotalNumberOf4(),
                     battingStat.getTotalNumberOf6(), battingStat.getStrikeRate());
         }

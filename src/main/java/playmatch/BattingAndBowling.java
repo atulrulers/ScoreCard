@@ -44,20 +44,12 @@ public class BattingAndBowling {
         }
     }
 
-    private void updateBattingTeamStat(final TeamInAMatch battingTeam, final RunType runType, final BowlType bowlType) {
-
-    }
-
     private void updateBattingStat(final TeamInAMatch battingTeam, final Player player,
             final RunType runType) {
         final PlayerStatInMatch playerStatInMatch = battingTeam.getPlayerStatInMatch()
                                                                .get(player);
         final BattingStat battingStat = playerStatInMatch.getBattingStat();
         battingStat.setTotalBallPlayed(battingStat.getTotalBallPlayed() + 1);
-
-        System.out.printf("Batsman playing %s %s %n%n", player.getFirstName(),
-                playerStatInMatch.getBattingStat()
-                                 .toString());
 
         switch (runType) {
         case SINGLE:
@@ -84,7 +76,10 @@ public class BattingAndBowling {
             System.out.println("Invalid entry");
             break;
         }
-        playerStatInMatch.setBattingStat(battingStat);
+//        playerStatInMatch.setBattingStat(battingStat);
+        System.out.printf("Batsman playing %s %s %n%n", player.getFirstName(),
+                playerStatInMatch.getBattingStat()
+                                 .toString());
     }
 
     private void updateBowlingStat(final TeamInAMatch bowlingTeam, final Player player, final BowlType bowlType) {
@@ -216,13 +211,14 @@ public class BattingAndBowling {
         case SINGLE:
         case TRIPLE:
         case OVER:
+            int onStrike = playInOneOver.getBatsmanOnStrike();
             playInOneOver.setBatsmanOnStrike(playInOneOver.getBatsmanOnNonStrike());
+            playInOneOver.setBatsmanOnNonStrike(onStrike);
             return playInOneOver.getBattingTeam()
                                 .getTeam()
                                 .getPlayerList()
-                                .get(playInOneOver.getBatsmanOnNonStrike());
+                                .get(playInOneOver.getBatsmanOnStrike());
         default:
-            playInOneOver.setBatsmanOnStrike(playInOneOver.getBatsmanOnStrike());
             return playInOneOver.getBattingTeam()
                                 .getTeam()
                                 .getPlayerList()
