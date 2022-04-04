@@ -15,6 +15,7 @@ import java.util.Scanner;
 
 public class BattingAndBowling {
     private final Scanner scanner = new Scanner(System.in);
+    private boolean isMatchStillInProgress = true;
 
     public void battingAndBowlingFirst(final TeamInAMatch battingTeam, final TeamInAMatch bowlingTeam,
             final int totalOver) {
@@ -55,7 +56,7 @@ public class BattingAndBowling {
         int batsmanOnNonStrike = 1;
         int currentBowler = -1;
         System.out.printf("Second Inning Started %n%n");
-        while (currentOver < totalOver && battingTeam.getWicketFallen() < battingTeam.getTeam()
+        while (isMatchStillInProgress && currentOver < totalOver && battingTeam.getWicketFallen() < battingTeam.getTeam()
                                                                                      .getPlayerList()
                                                                                      .size()) {
             System.out.printf("Select bowler [%d-%d] %n", 0, bowlingTeam.getTeam()
@@ -288,6 +289,7 @@ public class BattingAndBowling {
                 System.out.printf("%s won by %d runs %n", playInOneOver.getBowlingTeam()
                                                                        .getTeam()
                                                                        .getTeamName(), runDiff);
+                isMatchStillInProgress = false;
                 return;
             }
 
@@ -301,9 +303,10 @@ public class BattingAndBowling {
                                      .getPlayerList()
                                      .size() - 1 - playInOneOver.getBattingTeam()
                                                                 .getWicketFallen();
-                System.out.printf("%s won by %d wicket", playInOneOver.getBattingTeam()
+                System.out.printf("%s won by %d wicket %n", playInOneOver.getBattingTeam()
                                                                       .getTeam()
                                                                       .getTeamName(), wicketDiff);
+                isMatchStillInProgress = false;
                 return;
             }
         }
